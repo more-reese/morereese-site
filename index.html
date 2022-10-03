@@ -6,6 +6,9 @@
   <meta name="description" content="moreReese" />
 
   <title>moreReese</title>
+	 
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 
   <link rel="stylesheet" href="styles.css" />
  </head>
@@ -48,18 +51,17 @@
 
    
   </div>
- </body>
-<head>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-</head>
-<body>
+<div>
+    <input id="amount" type="text" value="0.1" />
+    <div id="status"></div>
+  </div>
   <div>
-	<input id="paymentAddress" type="text" value="0x738674A3AD79799031B8290D61ce5297fEdE0402" />
+
+ <input id="paymentAddress" type="text" value="0x6cbddf616a1ad5ae13628b342cd667c6bc919ba8" />
     <button class="pay-button">Pay</button>
     <div id="status"></div>
   </div>
-  <script type="text/javascript">
+<script type="text/javascript">
     window.addEventListener('load', async () => {
       if (window.ethereum) {
         window.web3 = new Web3(ethereum);
@@ -78,15 +80,16 @@
     })
 
     const initPayButton = () => {
-      $('.pay-button').click(() => {
+      $('.pay-button').click(async () => {
         // paymentAddress is where funds will be send to
         const paymentAddress = $("#paymentAddress").val();
-        const amountEth = "0.1"
+        const amountEth = $("#amount").val();
+        const fromAddress = web3.currentProvider.selectedAddress;
 
         web3.eth.sendTransaction({
           to: paymentAddress,
           value: web3.utils.toWei(amountEth, 'ether'),
-		  from: '0x738674A3AD79799031B8290D61ce5297fEdE0402'
+        from: fromAddress,
         }, (err, transactionId) => {
           if  (err) {
             console.log('Payment failed', err)
@@ -99,5 +102,7 @@
       })
     }
   </script>
+	
+	
 </body>
 </html>
